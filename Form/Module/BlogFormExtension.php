@@ -9,6 +9,8 @@
 
 namespace Clastic\BlogBundle\Form\Module;
 
+use Clastic\BackofficeBundle\Form\Type\EntityMultiSelectType;
+use Clastic\BackofficeBundle\Form\Type\WysiwygType;
 use Clastic\NodeBundle\Form\Extension\AbstractNodeTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,20 +27,19 @@ class BlogFormExtension extends AbstractNodeTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->getTabHelper($builder)->findTab('general')
-            ->add('introduction', 'wysiwyg', array(
+            ->add('introduction', WysiwygType::class, [
                 'label' => 'blog.form.tab.general.field.introduction',
-            ))
-            ->add('body', 'wysiwyg', array(
+            ])
+            ->add('body', WysiwygType::class, [
                 'label' => 'blog.form.tab.general.field.body',
-            ));
+            ]);
 
         $this->getTabHelper($builder)
             ->createTab('category', 'blog.form.tab.category.label')
-            ->add('categories', 'entity_multi_select', array(
+            ->add('categories', EntityMultiSelectType::class, [
                 'label' => 'blog.form.tab.category.field.categories',
                 'class' => 'ClasticBlogBundle:Category',
-                'property' => 'node.title',
                 'required' => false,
-            ));
+            ]);
     }
 }
